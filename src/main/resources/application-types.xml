@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="Create_Response" format="json">
+      <types:shape format="weave" example="examples/response.json"><![CDATA[%dw 2.0
+
+type Create_Response = {|
+  status: Number {"typeId": "int"}, 
+  message: String
+|} {"example": "{\\\"status\\\":200,\\\"message\\\":\\\"Success\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="response" format="xml">
+      <types:example format="xml" element="response" location="examples/response.xml"/>
+    </types:type>
+    <types:type name="createemployees" format="json">
+      <types:shape format="weave" example="examples/Response1.json"><![CDATA[%dw 2.0
+
+type createemployees = Array<{|  employeeid: Number {"typeId": "int"},   employeename: String,   empstatus: String|}> {"example": "[{\\\"employeeid\\\":100,\\\"employeename\\\":\\\"FSD\\\",\\\"empstatus\\\":\\\"A\\\"},{\\\"employeeid\\\":101,\\\"employeename\\\":\\\"FSD\\\",\\\"empstatus\\\":\\\"A\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#811fe910-4a59-41d5-adc6-c447e33606d4">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="Create_Response"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#a9f3bbb8-b374-4fcd-9934-c437cb2dc2a8">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="response"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#9af1f436-e450-4b5f-9eff-e4b91a01bd5a">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="createemployees"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

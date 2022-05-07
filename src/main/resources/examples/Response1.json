@@ -1,0 +1,16 @@
+
+[
+
+   {
+    "employeeid": 100,                
+	"employeename": "FSD",
+	"empstatus" : "A"
+   },
+
+  {
+    "employeeid": 101,                
+	"employeename": "FSD",
+	"empstatus" : "A"
+  }
+
+]
