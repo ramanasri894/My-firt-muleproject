@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="get-employeesFlow" doc:id="0d859de3-5493-495b-a2fc-a831ad3ad430" >
+		<http:listener doc:name="Listener" doc:id="8b965431-7123-4012-9e1f-dcabd331b9be" config-ref="EMP_HTTP_Listener_config" path="get-employees"/>
+		<db:select doc:name="Select" doc:id="2e614dfb-a7f1-4a58-b609-8de39eda8c0e" config-ref="Database_Config">
+			<db:sql ><![CDATA[select emp_id,emp_name,emp_status from emp]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="9af1f436-e450-4b5f-9eff-e4b91a01bd5a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	employeeid: payload01.EMP_ID default 0,
+	employeename: payload01.EMP_NAME default "",
+	empstatus: payload01.EMP_STATUS default ""
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
